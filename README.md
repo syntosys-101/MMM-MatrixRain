@@ -130,6 +130,10 @@ config: {
 
 **Still having issues?** Check the browser console (F12) for the actual canvas dimensions - look for "MMM-MatrixRain initialized at: WxH" in the logs.
 
+##Attribution
+
+Was looking for this for a awhile and found https://github.com/shin10/MMM-FF-digital-rain it didn't work s i loosly based this around it.
+
 ## License
 
 MIT
