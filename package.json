@@ -1,0 +1,29 @@
+{
+  "name": "mmm-matrixrain",
+  "version": "1.0.0",
+  "description": "A Matrix-style digital rain animation module for MagicMirror². Displays falling code as a fullscreen background.",
+  "keywords": [
+    "MagicMirror",
+    "MagicMirror2",
+    "matrix",
+    "rain",
+    "animation",
+    "background",
+    "digital rain"
+  ],
+  "homepage": "https://github.com/syntosys-101/MMM-MatrixRain#readme",
+  "bugs": {
+    "url": "https://github.com/syntosys-101/MMM-MatrixRain/issues"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/syntosys-101/MMM-MatrixRain.git"
+  },
+  "license": "MIT",
+  "author": "syntosys-101",
+  "main": "MMM-MatrixRain.js",
+  "type": "commonjs",
+  "engines": {
+    "node": ">=18"
+  }
+}

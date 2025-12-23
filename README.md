@@ -1,92 +1,109 @@
 # MMM-MatrixRain
 
-A MagicMirror² module that displays a fullscreen Matrix-style digital rain animation as a background layer behind all your other modules.
+A [MagicMirror²](https://magicmirror.builders/) module that displays a Matrix-style digital rain animation as a fullscreen background.
+
+![Matrix Rain Preview](screenshot.png)
+
+## Features
+
+- Fullscreen falling code animation behind all other modules
+- Supports rotated displays (portrait mode)
+- Adjustable brightness so overlaid modules remain readable
+- Customizable colors, speed, density, and character sets
+- Optional Matrix Code NFI font for authentic look
 
 ## Installation
 
-### 1. Copy the module
+### 1. Clone this repository
 
 ```bash
 cd ~/MagicMirror/modules
-# Copy or clone MMM-MatrixRain folder here
+git clone https://github.com/syntosys-101/MMM-MatrixRain.git
 ```
 
-### 2. Install the Matrix Code NFI font
+### 2. Install the Matrix Code NFI font (optional but recommended)
 
 1. Download from: https://www.dafont.com/matrix-code-nfi.font
-2. Extract and copy `matrix code nfi.ttf` to the fonts folder:
-   ```bash
-   mkdir -p ~/MagicMirror/modules/MMM-MatrixRain/fonts
-   cp "matrix code nfi.ttf" ~/MagicMirror/modules/MMM-MatrixRain/fonts/
-   ```
+2. Extract and copy the font file:
 
-### 3. Add to config.js
+```bash
+mkdir -p ~/MagicMirror/modules/MMM-MatrixRain/fonts
+cp "matrix code nfi.ttf" ~/MagicMirror/modules/MMM-MatrixRain/fonts/
+```
+
+### 3. Add to your config.js
 
 Add this to your `modules` array in `config/config.js`:
 
 ```javascript
 {
     module: "MMM-MatrixRain",
-    position: "fullscreen_below",
-    config: {}
+    position: "fullscreen_below"
 }
 ```
 
-That's it! The rain will fill your entire screen as a background.
-
-## Configuration Options
+## Configuration
 
 All options are optional with sensible defaults:
 
+| Option | Description | Default |
+|--------|-------------|---------|
+| `fontSize` | Character size in pixels | `20` |
+| `color` | Rain color (hex) | `"#00ff00"` |
+| `speed` | Milliseconds between frames (lower = faster) | `50` |
+| `density` | How often new drops spawn (0.90–0.99) | `0.96` |
+| `trailLength` | Fade speed (0.02–0.1, lower = longer trails) | `0.05` |
+| `brightness` | Character brightness (0.1–1.0) | `0.4` |
+| `rotated` | Set to `true` if display is rotated 90° | `true` |
+| `useMatrixFont` | Use Matrix Code NFI font | `true` |
+| `charset` | Characters to display | Katakana + alphanumeric |
+
+### Example Configuration
+
 ```javascript
 {
-      module: "MMM-MatrixRain",
-      position: "fullscreen_below",
-      config: {
+    module: "MMM-MatrixRain",
+    position: "fullscreen_below",
+    config: {
         fontSize: 22,
-        color: "#009900ff",
-        speed: 20,
+        color: "#00ff00",
+        speed: 45,
         density: 0.97,
-        trailLength: 0.04,
-        rotated: true,
-        useMatrixFont: true,
-        brightness: 0.4,
-        charset: "アイウエオカキクケコサシスセソタチツテト0123456789ABCDEFGHIJKLMNOPQRSTUVWXYZ"
+        brightness: 0.3,
+        rotated: true
     }
-},
+}
 ```
 
-## Examples
+### Preset Examples
 
-### Subtle Background
+**Subtle Background**
 ```javascript
 config: {
-    fontSize: 16,
-    color: "#004400",
+    brightness: 0.2,
     speed: 70,
-    trailLength: 0.03
+    density: 0.94
 }
 ```
 
-### Intense Rain
+**Intense Rain**
 ```javascript
 config: {
-    fontSize: 22,
-    color: "#00ff00",
+    brightness: 0.6,
     speed: 35,
-    density: 0.98,
-    trailLength: 0.08
+    density: 0.98
 }
 ```
 
-### Cyberpunk Blue
+**Cyberpunk Blue**
 ```javascript
 config: {
-    color: "#00ffff"
+    color: "#00ffff",
+    brightness: 0.4
 }
 ```
 
-### Binary Only
+**Binary Only**
 ```javascript
 config: {
     charset: "01",
@@ -94,46 +111,45 @@ config: {
 }
 ```
 
-## Troubleshooting
+## Rotated Display Support
 
-**Font not showing:** Ensure `matrix code nfi.ttf` is in the `fonts/` folder. Set `useMatrixFont: false` as fallback.
-
-**Animation choppy:** Increase `speed` value or decrease `fontSize`.
-
-**Rain not filling the whole screen:** Add this to your `css/custom.css` file in your MagicMirror folder:
+If your MagicMirror is in portrait mode using CSS rotation like:
 
 ```css
-.region.fullscreen_below {
-    position: fixed !important;
-    top: 0 !important;
-    left: 0 !important;
-    width: 100vw !important;
-    height: 100vh !important;
-    max-width: none !important;
-    max-height: none !important;
-    overflow: visible !important;
-}
-
-.MMM-MatrixRain,
-.MMM-MatrixRain .module-content,
-.matrix-rain-wrapper {
-    position: fixed !important;
-    top: 0 !important;
-    left: 0 !important;
-    width: 100vw !important;
-    height: 100vh !important;
-    max-width: none !important;
-    max-height: none !important;
-    overflow: visible !important;
+body {
+    transform: rotate(-90deg);
+    transform-origin: top left;
+    width: 100vh;
+    height: 100vw;
+    top: 100vh;
 }
 ```
 
-**Still having issues?** Check the browser console (F12) for the actual canvas dimensions - look for "MMM-MatrixRain initialized at: WxH" in the logs.
+Keep `rotated: true` (the default) and the canvas dimensions will be swapped correctly.
 
-##Attribution
+## Troubleshooting
 
-Was looking for this for a awhile and found https://github.com/shin10/MMM-FF-digital-rain it didn't work s i loosly based this around it.
+**Font not showing**
+- Ensure `matrix code nfi.ttf` is in the `fonts/` folder
+- Check file permissions: `chmod 644 fonts/matrix\ code\ nfi.ttf`
+- Set `useMatrixFont: false` to use system monospace as fallback
+
+**Animation is choppy**
+- Increase `speed` value (e.g., 70 or 80)
+- Decrease `fontSize` to reduce number of columns
+
+**Rain not covering full screen**
+- Check `rotated` setting matches your display orientation
+- Try toggling `rotated: true/false`
+
+**Overlaid modules hard to read**
+- Decrease `brightness` (try 0.2 or 0.15)
 
 ## License
 
-MIT
+MIT License - Feel free to modify and share!
+
+## Credits
+
+- Matrix Code NFI font by [Norfok Incredible Font Design](https://www.dafont.com/norfok-incredible-font-design.d205)
+- Inspired by The Matrix trilogy
