@@ -12,8 +12,10 @@ Module.register("MMM-MatrixRain", {
         charset: "アイウエオカキクケコサシスセソタチツテトナニヌネノハヒフヘホマミムメモヤユヨラリルレロワヲン0123456789ABCDEFGHIJKLMNOPQRSTUVWXYZ",
         useMatrixFont: true,
         trailLength: 0.05,
-        rotated: true,
-        brightness: 0.4  // Character brightness (0.1 = very dim, 1.0 = full brightness)
+        rotated: false,
+        brightness: 0.4,
+        width: null,   // Manual override - set to pixel value if auto-detect fails
+        height: null   // Manual override - set to pixel value if auto-detect fails
     },
 
     getStyles: function() {
@@ -51,15 +53,14 @@ Module.register("MMM-MatrixRain", {
         // Create canvas and inject directly into body
         this.canvas = document.createElement("canvas");
         this.canvas.id = "matrix-rain-canvas";
+        
         this.canvas.style.cssText = `
-            position: fixed !important;
-            top: 0 !important;
-            left: 0 !important;
-            width: 100% !important;
-            height: 100% !important;
-            z-index: -1000 !important;
-            pointer-events: none !important;
-            background: #000 !important;
+            position: fixed;
+            top: 0;
+            left: 0;
+            z-index: -9999;
+            pointer-events: none;
+            background: #000;
         `;
 
         // Insert as first child of body
@@ -82,7 +83,11 @@ Module.register("MMM-MatrixRain", {
 
         let width, height;
 
-        if (this.config.rotated) {
+        // Use manual overrides if provided
+        if (this.config.width && this.config.height) {
+            width = this.config.width;
+            height = this.config.height;
+        } else if (this.config.rotated) {
             // Display is rotated 90 degrees - swap dimensions
             width = window.screen.height || window.innerHeight;
             height = window.screen.width || window.innerWidth;
@@ -93,6 +98,10 @@ Module.register("MMM-MatrixRain", {
 
         this.canvas.width = width;
         this.canvas.height = height;
+        
+        // Set explicit CSS pixel dimensions
+        this.canvas.style.width = width + "px";
+        this.canvas.style.height = height + "px";
 
         Log.info("MMM-MatrixRain canvas size: " + width + "x" + height + (this.config.rotated ? " (rotated)" : ""));
     },

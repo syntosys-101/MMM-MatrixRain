@@ -54,7 +54,9 @@ All options are optional with sensible defaults:
 | `density` | How often new drops spawn (0.90–0.99) | `0.96` |
 | `trailLength` | Fade speed (0.02–0.1, lower = longer trails) | `0.05` |
 | `brightness` | Character brightness (0.1–1.0) | `0.4` |
-| `rotated` | Set to `true` if display is rotated 90° | `true` |
+| `rotated` | Set to `true` if display is rotated 90° | `false` |
+| `width` | Manual width override in pixels | `null` (auto) |
+| `height` | Manual height override in pixels | `null` (auto) |
 | `useMatrixFont` | Use Matrix Code NFI font | `true` |
 | `charset` | Characters to display | Katakana + alphanumeric |
 
@@ -69,8 +71,7 @@ All options are optional with sensible defaults:
         color: "#00ff00",
         speed: 45,
         density: 0.97,
-        brightness: 0.3,
-        rotated: true
+        brightness: 0.3
     }
 }
 ```
@@ -125,7 +126,32 @@ body {
 }
 ```
 
-Keep `rotated: true` (the default) and the canvas dimensions will be swapped correctly.
+Set `rotated: true` in your config:
+
+```javascript
+{
+    module: "MMM-MatrixRain",
+    position: "fullscreen_below",
+    config: {
+        rotated: true,
+        brightness: 0.3
+    }
+}
+```
+
+If auto-detection doesn't work, set dimensions manually (swap your screen's width/height):
+
+```javascript
+{
+    module: "MMM-MatrixRain",
+    position: "fullscreen_below",
+    config: {
+        width: 1080,   // Your screen's height becomes width when rotated
+        height: 1920,  // Your screen's width becomes height when rotated
+        brightness: 0.3
+    }
+}
+```
 
 ## Troubleshooting
 
@@ -140,7 +166,8 @@ Keep `rotated: true` (the default) and the canvas dimensions will be swapped cor
 
 **Rain not covering full screen**
 - Check `rotated` setting matches your display orientation
-- Try toggling `rotated: true/false`
+- Use manual `width` and `height` overrides with your screen resolution
+- Check browser console for "MMM-MatrixRain canvas size" log message
 
 **Overlaid modules hard to read**
 - Decrease `brightness` (try 0.2 or 0.15)
